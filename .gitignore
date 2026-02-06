@@ -41,10 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 # uploads
-Uploads
+/Uploads
 
-extension
-docs
+/extension
+/docs
 
 # cookies file
 x_cookies.txt

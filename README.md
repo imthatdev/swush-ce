@@ -246,12 +246,9 @@ Use Shortcuts with a **Form** body and attach a file.
 
 ## 🌐 Demo
 
-Experience Swush live at [coming soon]().
+Experience Swush live at [demo.swush.app](https://demo.swush.app).
 
-You can log in with the following demo credentials:
-
-- username: not yet
-- password: not yet
+You can sign up and test all features with your account, if the demo is online and if the registration is open. (You may contact me if it's closed.)
 
 Feel free to explore the features and get a feel for the app before deploying your own instance.
 

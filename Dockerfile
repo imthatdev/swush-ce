@@ -1,9 +1,9 @@
-FROM oven/bun:1 AS deps
+FROM oven/bun:1-slim AS deps
 WORKDIR /app
 COPY package.json bun.lockb* ./
 RUN bun install --frozen-lockfile || bun install
 
-FROM oven/bun:1 AS builder
+FROM oven/bun:1-slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -13,11 +13,19 @@ RUN bun x next build
 FROM oven/bun:1-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
-  PORT=3000 \
-  UPLOAD_ROOT=/data/uploads
+    PORT=3000 \
+    UPLOAD_ROOT=/data/uploads \
+    FFMPEG_PATH=/usr/bin/ffmpeg \
+    YTDLP_PATH=/usr/bin/yt-dlp
+
+
 RUN apt-get update -y \
-  && apt-get install -y --no-install-recommends ffmpeg curl ca-certificates yt-dlp clamav clamav-daemon \
-  && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends \
+    ffmpeg curl ca-certificates yt-dlp clamav clamav-daemon \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+    && freshclam || true
+
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
@@ -28,9 +36,9 @@ COPY --from=builder /app/src/db/schemas ./src/db/schemas
 COPY package.json next.config.* ./
 
 RUN rm -rf /app/.next/cache /root/.bun/install/cache /root/.cache \
-  && mkdir -p /app/.next/cache/images /data/uploads \
-  && chmod -R 777 /app/.next /data \
-  && chmod +x /app/docker/entrypoint.sh
+    && mkdir -p /app/.next/cache/images /data/uploads \
+    && chmod -R 777 /app/.next /data \
+    && chmod +x /app/docker/entrypoint.sh
 
 EXPOSE 3000
 CMD ["/app/docker/entrypoint.sh"]

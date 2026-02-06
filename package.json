@@ -1,6 +1,6 @@
 {
   "name": "swush-ce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Swush; A secure, self-hosted file sharing app with privacy-first features.",
   "author": {

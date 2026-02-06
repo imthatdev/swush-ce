@@ -26,11 +26,12 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ../.env
+      - ./.env
 
     ports:
       - "3419:3000"
     volumes:
+      # Can be removed if you don't want to persist uploads outside the container or using S3 for uploads
       - "D:/selfhosted/swush/uploads:/data/uploads:rw"
     networks:
       - swush

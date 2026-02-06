@@ -158,7 +158,7 @@ export async function getUsageForUser(
 
 export async function enforceCreateLimit(args: LimitCheckArgs): Promise<void> {
   const { userId, kind } = args;
-  const role: Role = (args.role === "owner" ? "admin" : args.role) ?? "user";
+  const role: Role = args.role ?? "user";
   const incoming = args.incomingCount ?? 1;
 
   const limit = await getEffectiveLimit({ userId, kind, role });
@@ -278,7 +278,7 @@ export async function getEffectiveUploadLimits(
 }
 
 export async function enforceUploadPolicy(ctx: UploadContext): Promise<void> {
-  const r: Role = (ctx.role === "owner" ? "admin" : ctx.role) ?? "user";
+  const r: Role = ctx.role ?? "user";
   const limits = await getEffectiveUploadLimits(ctx.userId, r);
 
   if (!ctx.fileSizesMb.length) return;

@@ -11,6 +11,24 @@ This project follows [Semantic Versioning](https://iconical.dev/versioning).
 
 ---
 
+## v1.0.1 – Bug Fixes and Polish 🐞
+
+**Released: February 6, 2026**
+
+A quick follow-up to the initial release, addressing some minor bugs and improving overall polish.
+
+### 🆕 Highlights
+
+- Docker image built with github actions, and multi-arch support for AMD64 and ARM64.
+- Rewrote some of the docker compose examples for better clarity and maintainability.
+
+### 🐛 Fixes
+
+- Fixed a bug where the owner role always fallback to admin, and now correctly retains the owner role.
+
+
+---
+
 ## v1.0.0 – Initial Release of CE ✨
 
 **Released: February 6, 2026**

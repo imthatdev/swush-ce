@@ -172,11 +172,11 @@ export const userPreferences = pgTable(
       .notNull()
       .default("private"),
     defaultUploadFolder: text("default_upload_folder"),
-    defaultUploadTags: text("default_upload_tags").array().default([]),
+    defaultUploadTags: text("default_upload_tags").array(),
     defaultShortlinkVisibility: text("default_shortlink_visibility")
       .notNull()
       .default("private"),
-    defaultShortlinkTags: text("default_shortlink_tags").array().default([]),
+    defaultShortlinkTags: text("default_shortlink_tags").array(),
     defaultShortlinkMaxClicks: integer("default_shortlink_max_clicks"),
     defaultShortlinkExpireDays: integer("default_shortlink_expire_days"),
     defaultShortlinkSlugPrefix: text("default_shortlink_slug_prefix")
@@ -440,10 +440,7 @@ export const serverSettings = pgTable("server_settings", {
   passwordPolicyMinLength: integer("password_policy_min_length")
     .notNull()
     .default(10),
-  preservedUsernames: text("preserved_usernames")
-    .array()
-    .default(process.env.PRESERVED_USERNAMES?.split(",") || []),
-
+  preservedUsernames: text("preserved_usernames").array(),
   userMaxStorageMb: integer("user_max_storage_mb").notNull().default(5120),
   adminMaxStorageMb: integer("admin_max_storage_mb").notNull().default(10240),
   userDailyQuotaMb: integer("user_daily_quota_mb").notNull().default(1024),
@@ -602,7 +599,7 @@ export const integrationWebhooks = pgTable(
     url: text("url").notNull(),
     secret: text("secret"),
     format: varchar("format", { length: 32 }).notNull().default("json"),
-    events: json("events").default([]),
+    events: json("events"),
     enabled: boolean("enabled").notNull().default(true),
     lastStatus: integer("last_status"),
     lastError: text("last_error"),

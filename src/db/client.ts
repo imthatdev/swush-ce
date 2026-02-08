@@ -15,12 +15,10 @@
  *   limitations under the License.
  */
 
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "./schemas";
+import postgres from "postgres";
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const client = postgres(process.env.DATABASE_URL as string);
 
-export const db = drizzle(pool, { schema });
+export const db = drizzle(client, { schema });

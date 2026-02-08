@@ -1,25 +1,21 @@
 # ========================
-# Stage 1: Dependencies
-# ========================
-FROM node:20-alpine AS deps
-WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@latest --activate
-COPY package.json pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile
-
-# ========================
-# Stage 2: Build
+# Stage 1: Build
 # ========================
 FROM node:20-alpine AS builder
 WORKDIR /app
+
+# Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
-COPY --from=deps /app/node_modules ./node_modules
+
+# Install dependencies and build the app
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
+
 COPY . .
-ENV NODE_ENV=production
-RUN pnpm exec next build
+RUN pnpm build
 
 # ========================
-# Stage 3: Runner / Production
+# Stage 2: Production runner
 # ========================
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -35,25 +31,21 @@ RUN apk add --no-cache \
     bash \
  && rm -rf /var/cache/apk/*
 
-# Set environment
-ENV NODE_ENV=production \
-    PORT=3000 \
-    UPLOAD_ROOT=/data/uploads \
-    FFMPEG_PATH=/usr/bin/ffmpeg \
-    YTDLP_PATH=/usr/bin/yt-dlp
+# Just install drizzle-kit (and any runtime peer deps needed to run migrations)
+RUN corepack enable && corepack prepare pnpm@latest --activate \
+ && pnpm add --prod drizzle-kit drizzle-orm postgres
 
-# Update ClamAV database
-RUN freshclam
-
-# Copy app files
+# Copy Next.js standalone/server output and static assets from the build stage
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/docker/entrypoint.sh ./docker/entrypoint.sh
 
-# Prepare folders & permissions
-RUN mkdir -p /app/.next/cache/images /data/uploads \
-    && chmod +x ./docker/entrypoint.sh
+# Copy entrypoint script
+COPY docker/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3000
-CMD ["node","server.js"]
+
+ENV NODE_ENV=production
+
+CMD ["./entrypoint.sh"]

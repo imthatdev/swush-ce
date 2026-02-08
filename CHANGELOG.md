@@ -11,6 +11,18 @@ This project follows [Semantic Versioning](https://iconical.dev/versioning).
 
 ---
 
+## v1.0.2 – Minor Improvements and Fixes 🛠️
+
+**Released: February 8, 2026**
+
+### 🆕 Highlights
+
+- Minimized Docker image size for faster builds and lighter deployments (standalone next.js)
+- Refactored small parts of the code for better readability and maintainability
+- Replaced `pg` with `postgres.js` for a modern and friendly database client
+
+---
+
 ## v1.0.1 – Bug Fixes and Polish 🐞
 
 **Released: February 6, 2026**

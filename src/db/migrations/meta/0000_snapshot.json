@@ -1,5 +1,5 @@
 {
-  "id": "5c9c4ae5-9aca-4eb0-ae7c-fc1f8bff971d",
+  "id": "30f663f5-a180-4fb1-8c5c-fd9d02bb148b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -2316,8 +2316,7 @@
           "name": "events",
           "type": "json",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'[]'::json"
+          "notNull": false
         },
         "enabled": {
           "name": "enabled",
@@ -4759,8 +4758,7 @@
           "name": "default_upload_tags",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'{}'"
+          "notNull": false
         },
         "default_shortlink_visibility": {
           "name": "default_shortlink_visibility",
@@ -4773,8 +4771,7 @@
           "name": "default_shortlink_tags",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'{}'"
+          "notNull": false
         },
         "default_shortlink_max_clicks": {
           "name": "default_shortlink_max_clicks",

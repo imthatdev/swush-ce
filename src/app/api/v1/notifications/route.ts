@@ -52,8 +52,8 @@ export const GET = withApiError(async function GET(req: NextRequest) {
     .where(
       and(
         eq(notifications.userId, session.user.id),
-        isNull(notifications.readAt)
-      )
+        isNull(notifications.readAt),
+      ),
     );
 
   return NextResponse.json({ items, unread });
@@ -72,14 +72,14 @@ export const PATCH = withApiError(async function PATCH(req: NextRequest) {
   const where = markAll
     ? and(
         eq(notifications.userId, session.user.id),
-        isNull(notifications.readAt)
+        isNull(notifications.readAt),
       )
     : ids && ids.length > 0
-    ? and(
-        eq(notifications.userId, session.user.id),
-        inArray(notifications.id, ids)
-      )
-    : null;
+      ? and(
+          eq(notifications.userId, session.user.id),
+          inArray(notifications.id, ids),
+        )
+      : null;
 
   if (!where) {
     return NextResponse.json({ status: false, updated: 0 });
@@ -90,7 +90,7 @@ export const PATCH = withApiError(async function PATCH(req: NextRequest) {
     .set({ readAt: new Date() })
     .where(where);
 
-  return NextResponse.json({ status: true, updated: result.rowCount ?? 0 });
+  return NextResponse.json({ status: true, updated: result });
 });
 
 export const DELETE = withApiError(async function DELETE(req: NextRequest) {
@@ -103,5 +103,5 @@ export const DELETE = withApiError(async function DELETE(req: NextRequest) {
     .delete(notifications)
     .where(eq(notifications.userId, session.user.id));
 
-  return NextResponse.json({ status: true, deleted: result.rowCount ?? 0 });
+  return NextResponse.json({ status: true, deleted: result });
 });

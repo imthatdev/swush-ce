@@ -5,6 +5,8 @@ Swush is a secure, self-hosted full‑stack file manager and personal dashboard 
 
 ## ✨ Features
 
+> **Note:** The following features are [***Pro-only***](https://buymeacoffee.com/iconical/e/507392) and not available in the Community Edition (CE): **Bookmarks, Snippets, Recipes, Notes, and Games Collection**.
+
 ### Authentication & Security
 - Better Auth sessions with optional 2FA (TOTP).
 - Robust session management and role-based access.
@@ -60,14 +62,16 @@ Swush is a secure, self-hosted full‑stack file manager and personal dashboard 
 
 ### 1. Clone the repository
 ```bash
-bun x degit imthatdev/swush-ce
+pnpm x degit imthatdev/swush-ce
 cd swush
 ```
 
 ### 2. Install dependencies
 ```bash
-bun install
+pnpm install
 ```
+
+> **Note:** Swush uses [PNPM](https://pnpm.io/) and Node.js. You can use `npm` or `yarn` as alternatives if you prefer, but ensure the lockfile and workspace compatibility.
 
 ### 3. Setup environment variables
 Copy `example.env` to `.env` and update the values:
@@ -82,18 +86,20 @@ cp example.env .env
 
 ### 5. Run database migrations
 ```bash
-bun x drizzle-kit push
+pnpm db:migrate
 ```
 
 ### 6. Start the development server
 ```bash
-bun dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 
 ## 🐳 Deployment with Docker
+
+> **Note:** The Docker setup has been recently updated and optimized for smaller image size and faster builds.
 
 ### Build and run with remote database (Neon, Supabase, etc.)
 ```bash
@@ -107,18 +113,6 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d --buil
 
 - The app will be accessible at [http://localhost:3000](http://localhost:3000).
 - PostgreSQL will be exposed on port `5432` (credentials configured in `.env`).
-
-## ⏱️ Scheduled Jobs (Cron)
-
-The job endpoints are secured by `CRON_SECRET` and must be called by a scheduler.
-By default, the app runs jobs internally (single instance only) using the
-`cron` npm package with the schedule set to 03:00 UTC+3 (midnight UTC). To
-disable, set `ENABLE_APP_CRON=false`. Do not enable this when running multiple
-app replicas or the jobs will run multiple times.
-
-Vercel example config is in `vercel.example.json` (Vercel cron runs in UTC).
-Note: Vercel cron does not send custom headers, so you will need a proxy that
-adds `x-cron-secret` or relax the header check for Vercel-only deployments.
 
 ## ☁️ Cloudflare Cache Rules (HLS Only)
 
@@ -143,77 +137,6 @@ This keeps:
 
 If you want to keep your global bypass rule, just add this HLS rule **above it**
 so `/hls/*` is cached while all other routes stay bypassed.
-
-
-## 🍎 Apple Shortcuts (API Automation)
-
-You can automate Swush actions from iOS/macOS Shortcuts using **Get Contents of URL**.
-All requests require your API key as `x-api-key`.
-
-### Bookmark Shortcut
-**Request**
-- Method: `POST`
-- URL: `https://your-domain.com/api/v1/bookmarks`
-- Headers:
-  - `Content-Type: application/json`
-  - `x-api-key: YOUR_KEY`
-- Body (JSON):
-```
-{
-  "url": "https://example.com",
-  "title": "Optional title",
-  "isPublic": false,
-  "tags": ["reading", "ideas"]
-}
-```
-
-### Short Link Shortcut
-**Request**
-- Method: `POST`
-- URL: `https://your-domain.com/api/v1/shorten`
-- Headers:
-  - `Content-Type: application/json`
-  - `x-api-key: YOUR_KEY`
-- Body (JSON):
-```
-{
-  "originalUrl": "https://example.com",
-  "isPublic": true
-}
-```
-
-### Note Shortcut
-**Request**
-- Method: `POST`
-- URL: `https://your-domain.com/api/v1/notes`
-- Headers:
-  - `Content-Type: application/json`
-  - `x-api-key: YOUR_KEY`
-- Body (JSON):
-```
-{
-  "title": "Optional title",
-  "content": "note text",
-  "sourceUrl": "https://source.com",
-  "isPublic": false,
-  "tags": ["ideas"]
-}
-```
-
-### File Upload Shortcut
-Use Shortcuts with a **Form** body and attach a file.
-
-**Request**
-- Method: `POST`
-- URL: `https://your-domain.com/api/v1/upload`
-- Headers:
-  - `x-api-key: YOUR_KEY`
-- Body (Form):
-  - `file`: (the selected file)
-  - `isPublic`: `true` or `false`
-  - `description`: `Optional description`
-  - `folderName`: `Optional folder name`
-  - `newTags`: `tag1,tag2,tag3`
 
 ## 🔧 Self‑Hosting Guide
 
@@ -264,7 +187,7 @@ Contributions are welcome! To contribute:
 Before committing, run linting and tests:
 
 ```bash
-bun lint
+pnpm lint
 ```
 
 
@@ -280,6 +203,6 @@ APACHE 2.0 © 2026 Iconical
 - GitHub: [imthatdev](https://github.com/imthatdev)
 - Email: him@iconical.dev
 
-## 🙏 To Note
+### 🙏 To Note Again
 
-\* Bookmarks, Snippets, Recipes, and Notes are Pro edition features and not available in the Community Edition (CE).
+> Bookmarks, Snippets, Recipes, and Notes are Pro edition features and not available in the Community Edition (CE). You can check out the Pro edition in the demo or consider upgrading to Pro [here](https://buymeacoffee.com/iconical/e/507392).

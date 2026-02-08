@@ -1,6 +1,6 @@
 {
   "name": "swush-ce",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Swush; A secure, self-hosted file sharing app with privacy-first features.",
   "author": {
@@ -38,7 +38,7 @@
     "start": "next start",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "db:generate": "npx drizzle-kit generate --config drizzle.config.ts",
-    "db:migrate": "drizzle-kit push --config=drizzle.config.ts",
+    "db:migrate": "drizzle-kit push --config=drizzle.config.ts --force",
     "git:push": "git push && git push --follow-tags",
     "tag:generate": "git tag -s v$(node -p 'require(\"./package.json\").version') -m \"🔖tag: v$(node -p 'require(\"./package.json\").version') release\"",
     "auth:generate": "npx @better-auth/cli generate --config src/lib/auth/index.ts",

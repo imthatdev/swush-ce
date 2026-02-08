@@ -56,9 +56,15 @@ const socialProviders = socialConfig.enabled
   : undefined;
 const appName = process.env.APP_NAME || "Swush";
 const baseURL = process.env.APP_URL || process.env.BETTER_AUTH_URL;
+const origins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim())
+  : undefined;
 
 export const auth = betterAuth({
   baseURL,
+  trustedOrigins: async (request) => {
+    return [baseURL, ...(origins || []), request?.headers.get("origin")];
+  },
   database: drizzleAdapter(db, {
     provider: "pg",
   }),

@@ -1,23 +1,57 @@
-.DS_Store
-.env*
-.git
-.github
-.next
-node_modules
-extension
-Uploads
-docker
-!docker/entrypoint.sh
+# Tests & local junk
+__tests__
+tests
+*.spec.*
+*.test.*
+jest.config.*
+vitest.config.*
 *.log
 coverage
 tmp
 **/tmp
 **/.cache
+
+# Build / tooling
+.turbo
+.vercel
+dist
+build
+.git
+.github
+.next
+node_modules
+
+# Package managers extras
+.pnpm-store
+.npmrc
+.yarnrc*
+.pnp.*
+
+# Local configs
+.DS_Store
+.env*
+.env.local
+.env.development*
+.env.test*
+.env.production*
+docker-compose*.yml
+example.env
+
+# OS / editor trash
+Thumbs.db
+.idea
+*.orig
+*.bak
+
+# Docs & meta
+CHANGELOG.md
+TODO.md
 docs
+extension
+Uploads
+docker
 .vscode
 *.tsbuildinfo
 *.swp
 *.swo
 /data
-README.md
-TODO.md

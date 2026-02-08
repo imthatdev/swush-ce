@@ -19,11 +19,11 @@ module.exports = {
   apps: [
     {
       name: "Swush",
-      script: "bun",
-      args: "start",
+      script: "node",
+      args: ".next/standalone/server.js",
       env: {
-        NODE_ENV: "development",
-        PORT: 3341,
+        NODE_ENV: "production",
+        PORT: 3000,
       },
     },
   ],

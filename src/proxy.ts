@@ -104,20 +104,40 @@ export async function proxy(request: NextRequest) {
   if (isStaticAsset(pathname)) return NextResponse.next();
 
   if (pathname.startsWith("/api/")) {
-    const origin = request.headers.get("origin") || "";
+    const originHeader = request.headers.get("origin");
+    const host =
+      request.headers.get("x-forwarded-host") || request.headers.get("host");
+
+    const proto =
+      request.headers.get("x-forwarded-proto") ||
+      (process.env.NODE_ENV === "production" ? "https" : "http");
+
+    const allowedOrigins = [
+      process.env.APP_URL,
+      ...(process.env.CORS_ORIGIN?.split(",") ?? []),
+    ]
+      .map((o) => o?.trim())
+      .filter((o): o is string => !!o);
+
+    const origin = originHeader ?? `${proto}://${host}`;
+    const matchedOrigin = allowedOrigins.find((o) => origin?.startsWith(o));
     const isTauriOrigin = origin.toLowerCase().startsWith("tauri://");
 
-    const allowedOrigin = process.env.APP_URL || process.env.BETTER_AUTH_URL;
-    const isAllowed = origin === allowedOrigin || !isProd || isTauriOrigin;
+    const isAllowed = !!matchedOrigin || !isProd || isTauriOrigin;
 
     if (!isAllowed) {
-      return new NextResponse("Bad origin", { status: 403 });
+      return new NextResponse("Bad Origin", {
+        status: 403,
+        statusText: "Origin not allowed",
+      });
     }
 
     if (request.method === "OPTIONS") {
       const pre = new NextResponse(null, { status: isAllowed ? 204 : 403 });
       if (isAllowed && origin) {
-        pre.headers.set("Access-Control-Allow-Origin", origin);
+        if (matchedOrigin) {
+          pre.headers.set("Access-Control-Allow-Origin", matchedOrigin);
+        }
         pre.headers.set("Vary", "Origin");
         pre.headers.set(
           "Access-Control-Allow-Methods",
@@ -134,7 +154,9 @@ export async function proxy(request: NextRequest) {
 
     const res = NextResponse.next();
     if (isAllowed && origin) {
-      res.headers.set("Access-Control-Allow-Origin", origin);
+      if (matchedOrigin) {
+        res.headers.set("Access-Control-Allow-Origin", matchedOrigin);
+      }
       res.headers.set("Vary", "Origin");
       res.headers.set("Access-Control-Allow-Credentials", "true");
     }

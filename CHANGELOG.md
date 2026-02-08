@@ -11,6 +11,21 @@ This project follows [Semantic Versioning](https://iconical.dev/versioning).
 
 ---
 
+## v1.0.3 – CORS and Security Enhancements 🔐
+
+**Released: February 8, 2026**
+
+This patch addresses some minor issues and enhances the overall user experience.
+
+### 🆕 Highlights
+
+- Improved CORS handling in the proxy for better security and flexibility
+- Added more specific error messages for CORS rejections
+- Updated drizzle config to remove verbose and strict options for cleaner logs and more forgiving schema changes
+- Updated the ignore file to exclude more unnecessary files and directories from version control, keeping the repo clean and focused on source code
+
+---
+
 ## v1.0.2 – Minor Improvements and Fixes 🛠️
 
 **Released: February 8, 2026**

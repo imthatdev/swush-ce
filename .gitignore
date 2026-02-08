@@ -1,8 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
+# Dependencies
+node_modules/
+.pnpm-store
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -10,41 +9,53 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
+# Build outputs
+.next/
+.next/cache
+out/
+build/
+dist/
+.turbo
 
-# next.js
-/.next/
-/out/
+# Testing / coverage
+coverage/
+*.lcov
 
-# production
-/build
+# Env files
+.env*
+.env.local
+.env.development*
+.env.test*
+.env.production*
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Logs / debug
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# Docker / Compose (local only)
+docker-compose*.yml
+compose*.yml
 
-# vercel
+# Hosting / tooling
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-# uploads
-/Uploads
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.idea
+.vscode
 
-/extension
-/docs
-
-# cookies file
+# App-specific ignores
+Uploads/
+extension/
+docs/
+coverage/
 x_cookies.txt
+*.pem

@@ -33,7 +33,7 @@ RUN apk add --no-cache \
 
 # Just install drizzle-kit (and any runtime peer deps needed to run migrations)
 RUN corepack enable && corepack prepare pnpm@latest --activate \
- && pnpm add --prod drizzle-kit drizzle-orm postgres
+ && pnpm add --prod drizzle-kit drizzle-orm pg
 
 # Copy Next.js standalone/server output and static assets from the build stage
 COPY --from=builder /app/.next/standalone ./
